@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GitHub Pages - ホーム</title>
+    <title>GitHub Pages - 概要</title>
     <style>
         * {
             margin: 0;
@@ -88,7 +88,7 @@
             padding: 2rem;
         }
 
-        .hero {
+        .page-header {
             text-align: center;
             background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(10px);
@@ -98,7 +98,7 @@
             box-shadow: 0 10px 40px rgba(0,0,0,0.1);
         }
 
-        .hero h1 {
+        .page-header h1 {
             font-size: 3rem;
             color: #2c3e50;
             margin-bottom: 1rem;
@@ -108,98 +108,93 @@
             -webkit-text-fill-color: transparent;
         }
 
-        .hero p {
-            font-size: 1.2rem;
-            color: #666;
-            margin-bottom: 1rem;
+        .content-section {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 2rem;
+            margin: 2rem 0;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
         }
 
-        .date-display {
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            color: white;
-            padding: 0.5rem 1rem;
-            border-radius: 25px;
-            display: inline-block;
-            font-weight: 500;
-            margin: 1rem 0;
-        }
-
-        .cards {
+        .features-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 2rem;
             margin: 2rem 0;
         }
 
-        .card {
+        .feature-card {
             background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(10px);
             border-radius: 15px;
             padding: 2rem;
             box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            transition: transform 0.3s ease;
         }
 
-        .card:hover {
+        .feature-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 15px 40px rgba(0,0,0,0.15);
         }
 
-        .card h3 {
-            color: #2c3e50;
+        .feature-icon {
+            font-size: 3rem;
             margin-bottom: 1rem;
-            font-size: 1.3rem;
+            display: block;
         }
 
-        .card ul {
-            list-style: none;
-        }
-
-        .card li {
-            padding: 0.5rem 0;
-            padding-left: 1.5rem;
+        .timeline {
             position: relative;
+            padding-left: 2rem;
         }
 
-        .card li::before {
-            content: "✓";
+        .timeline::before {
+            content: '';
             position: absolute;
             left: 0;
-            color: #667eea;
-            font-weight: bold;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-radius: 3px;
         }
 
-        .interactive-demo {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            border-radius: 15px;
-            padding: 2rem;
-            margin: 2rem 0;
-            text-align: center;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        .timeline-item {
+            position: relative;
+            margin-bottom: 2rem;
+            padding-left: 2rem;
         }
 
-        .demo-button {
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -1.5rem;
+            top: 0.5rem;
+            width: 12px;
+            height: 12px;
+            background: #667eea;
+            border-radius: 50%;
+        }
+
+        .timeline-item h3 {
+            color: #2c3e50;
+            margin-bottom: 0.5rem;
+        }
+
+        .tech-stack {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+
+        .tech-badge {
             background: linear-gradient(135deg, #667eea, #764ba2);
             color: white;
-            border: none;
-            padding: 1rem 2rem;
-            border-radius: 25px;
-            font-size: 1rem;
-            cursor: pointer;
-            transition: transform 0.3s ease;
-            margin: 0.5rem;
-        }
-
-        .demo-button:hover {
-            transform: scale(1.05);
-        }
-
-        #click-counter {
-            font-size: 2rem;
-            color: #667eea;
-            font-weight: bold;
-            margin: 1rem 0;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 500;
         }
 
         .theme-toggle {
@@ -227,18 +222,18 @@
             background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
         }
 
-        body.dark-theme .card,
-        body.dark-theme .hero,
-        body.dark-theme .interactive-demo {
+        body.dark-theme .content-section,
+        body.dark-theme .page-header,
+        body.dark-theme .feature-card {
             background: rgba(52, 73, 94, 0.95);
             color: #ecf0f1;
         }
 
-        body.dark-theme .hero h1 {
+        body.dark-theme .page-header h1 {
             color: #ecf0f1;
         }
 
-        body.dark-theme .card h3 {
+        body.dark-theme .timeline-item h3 {
             color: #ecf0f1;
         }
 
@@ -277,7 +272,7 @@
                 transform: rotate(45deg) translate(-5px, -6px);
             }
 
-            .hero h1 {
+            .page-header h1 {
                 font-size: 2rem;
             }
 
@@ -285,9 +280,12 @@
                 padding: 1rem;
             }
 
-            .cards {
+            .features-grid {
                 grid-template-columns: 1fr;
-                gap: 1rem;
+            }
+
+            .tech-stack {
+                justify-content: center;
             }
 
             .theme-toggle {
@@ -300,11 +298,11 @@
         }
 
         @media (max-width: 480px) {
-            .hero {
+            .page-header {
                 padding: 2rem 1rem;
             }
 
-            .hero h1 {
+            .page-header h1 {
                 font-size: 1.8rem;
             }
 
@@ -319,8 +317,8 @@
         <div class="nav-container">
             <div class="logo">My Site</div>
             <ul class="nav-links" id="nav-links">
-                <li><a href="index.html" class="active">ホーム</a></li>
-                <li><a href="about.html">概要</a></li>
+                <li><a href="index.html">ホーム</a></li>
+                <li><a href="about.html" class="active">概要</a></li>
                 <li><a href="contact.html">連絡先</a></li>
             </ul>
             <div class="hamburger" id="hamburger">
@@ -333,63 +331,90 @@
 
     <main>
         <div class="container">
-            <div class="hero">
-                <h1>GitHub Pages サイトへようこそ</h1>
-                <p>このサイトはGitHub Pagesでホストされています。</p>
-                <div class="date-display">
-                    今日の日付: <span id="date"></span>
+            <div class="page-header">
+                <h1>サイト概要</h1>
+                <p>このGitHub Pagesサイトについて詳しく説明します</p>
+            </div>
+
+            <div class="content-section">
+                <h2>🎯 プロジェクトについて</h2>
+                <p>このサイトは、GitHub Pagesを使用してホストされているモダンなWebサイトです。レスポンシブデザイン、インタラクティブな機能、そして美しいUIを備えています。</p>
+                
+                <h3>主な特徴</h3>
+                <ul>
+                    <li>✨ モダンなガラスモーフィズムデザイン</li>
+                    <li>📱 完全レスポンシブ対応</li>
+                    <li>🌙 ダークテーマサポート</li>
+                    <li>🚀 高速で軽量</li>
+                    <li>♿ アクセシビリティに配慮</li>
+                </ul>
+            </div>
+
+            <div class="features-grid">
+                <div class="feature-card">
+                    <span class="feature-icon">🎨</span>
+                    <h3>デザイン</h3>
+                    <p>最新のWebデザイントレンドを取り入れたモダンなUI。グラデーション、ガラス効果、スムーズなアニメーションを使用。</p>
+                </div>
+
+                <div class="feature-card">
+                    <span class="feature-icon">⚡</span>
+                    <h3>パフォーマンス</h3>
+                    <p>軽量で高速。最適化されたCSS、効率的なJavaScript、そして最小限のライブラリ使用。</p>
+                </div>
+
+                <div class="feature-card">
+                    <span class="feature-icon">🔧</span>
+                    <h3>機能性</h3>
+                    <p>インタラクティブな要素、テーマ切り替え、レスポンシブナビゲーション、スムーズスクロール。</p>
                 </div>
             </div>
 
-            <div class="cards">
-                <div class="card">
-                    <h3>✨ CSSスタイルのカスタマイズ</h3>
-                    <ul>
-                        <li>モダンなグラデーション背景</li>
-                        <li>ガラスモーフィズム効果</li>
-                        <li>スムーズなアニメーション</li>
-                        <li>ダークテーマサポート</li>
-                    </ul>
-                </div>
-
-                <div class="card">
-                    <h3>📱 レスポンシブデザイン</h3>
-                    <ul>
-                        <li>モバイルフレンドリー</li>
-                        <li>ハンバーガーメニュー</li>
-                        <li>フレキシブルなレイアウト</li>
-                        <li>適応的なグリッド</li>
-                    </ul>
-                </div>
-
-                <div class="card">
-                    <h3>🚀 JavaScript機能</h3>
-                    <ul>
-                        <li>インタラクティブな要素</li>
-                        <li>テーマ切り替え</li>
-                        <li>スムーズなナビゲーション</li>
-                        <li>動的なコンテンツ更新</li>
-                    </ul>
-                </div>
-
-                <div class="card">
-                    <h3>📄 追加ページ</h3>
-                    <ul>
-                        <li>概要ページ</li>
-                        <li>連絡先ページ</li>
-                        <li>統一されたナビゲーション</li>
-                        <li>SEO最適化</li>
-                    </ul>
+            <div class="content-section">
+                <h2>🛠️ 使用技術</h2>
+                <div class="tech-stack">
+                    <span class="tech-badge">HTML5</span>
+                    <span class="tech-badge">CSS3</span>
+                    <span class="tech-badge">JavaScript ES6+</span>
+                    <span class="tech-badge">CSS Grid</span>
+                    <span class="tech-badge">Flexbox</span>
+                    <span class="tech-badge">Media Queries</span>
+                    <span class="tech-badge">LocalStorage</span>
+                    <span class="tech-badge">GitHub Pages</span>
                 </div>
             </div>
 
-            <div class="interactive-demo">
-                <h3>🎮 インタラクティブデモ</h3>
-                <p>ボタンをクリックしてJavaScript機能をテストしてみてください！</p>
-                <button class="demo-button" onclick="incrementCounter()">クリック！</button>
-                <button class="demo-button" onclick="changeMessage()">メッセージ変更</button>
-                <div id="click-counter">クリック数: 0</div>
-                <p id="demo-message">JavaScript が動作しています！</p>
+            <div class="content-section">
+                <h2>📈 開発履歴</h2>
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <h3>v1.0 - 初期版</h3>
+                        <p>基本的なHTML構造とシンプルなスタイリング</p>
+                    </div>
+                    <div class="timeline-item">
+                        <h3>v2.0 - デザイン強化</h3>
+                        <p>グラデーション背景、ガラスモーフィズム効果、カードレイアウト</p>
+                    </div>
+                    <div class="timeline-item">
+                        <h3>v3.0 - レスポンシブ対応</h3>
+                        <p>モバイル対応、ハンバーガーメニュー、適応的グリッド</p>
+                    </div>
+                    <div class="timeline-item">
+                        <h3>v4.0 - インタラクティブ機能</h3>
+                        <p>JavaScript機能、テーマ切り替え、アニメーション</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="content-section">
+                <h2>🎯 将来の計画</h2>
+                <ul>
+                    <li>🔍 検索機能の追加</li>
+                    <li>📊 アナリティクス統合</li>
+                    <li>🌐 多言語対応</li>
+                    <li>📝 ブログセクション</li>
+                    <li>🎵 音響効果</li>
+                </ul>
             </div>
         </div>
     </main>
@@ -397,9 +422,6 @@
     <button class="theme-toggle" onclick="toggleTheme()" title="テーマ切り替え">🌙</button>
 
     <script>
-        // 日付表示
-        document.getElementById('date').textContent = new Date().toLocaleDateString('ja-JP');
-
         // ハンバーガーメニュー
         const hamburger = document.getElementById('hamburger');
         const navLinks = document.getElementById('nav-links');
@@ -408,41 +430,6 @@
             navLinks.classList.toggle('active');
             hamburger.classList.toggle('active');
         });
-
-        // インタラクティブ機能
-        let clickCount = 0;
-        const messages = [
-            'JavaScript が動作しています！',
-            'すばらしい！続けてください！',
-            'あなたはクリックの達人ですね！',
-            'まだまだいけますよ！',
-            '素晴らしいクリック技術です！'
-        ];
-        let messageIndex = 0;
-
-        function incrementCounter() {
-            clickCount++;
-            document.getElementById('click-counter').textContent = `クリック数: ${clickCount}`;
-            
-            // クリック数に応じてアニメーション
-            const counter = document.getElementById('click-counter');
-            counter.style.transform = 'scale(1.2)';
-            setTimeout(() => {
-                counter.style.transform = 'scale(1)';
-            }, 200);
-        }
-
-        function changeMessage() {
-            messageIndex = (messageIndex + 1) % messages.length;
-            const messageElement = document.getElementById('demo-message');
-            messageElement.textContent = messages[messageIndex];
-            
-            // メッセージ変更アニメーション
-            messageElement.style.opacity = '0';
-            setTimeout(() => {
-                messageElement.style.opacity = '1';
-            }, 100);
-        }
 
         // テーマ切り替え
         function toggleTheme() {
@@ -474,15 +461,21 @@
             });
         });
 
-        // カードのホバーエフェクト強化
-        document.querySelectorAll('.card').forEach(card => {
-            card.addEventListener('mouseenter', function() {
-                this.style.transform = 'translateY(-5px) scale(1.02)';
+        // カードアニメーション
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    entry.target.style.transform = 'translateY(0)';
+                    entry.target.style.opacity = '1';
+                }
             });
-            
-            card.addEventListener('mouseleave', function() {
-                this.style.transform = 'translateY(0) scale(1)';
-            });
+        });
+
+        document.querySelectorAll('.feature-card').forEach((card) => {
+            card.style.transform = 'translateY(30px)';
+            card.style.opacity = '0';
+            card.style.transition = 'transform 0.6s ease, opacity 0.6s ease';
+            observer.observe(card);
         });
     </script>
 </body>

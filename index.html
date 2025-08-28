@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GitHub Pages</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            line-height: 1.6;
+            color: #333;
+        }
+        h1 {
+            color: #2c3e50;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+        }
+        .welcome {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            border-left: 4px solid #3498db;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>GitHub Pages サイトへようこそ</h1>
+    
+    <div class="welcome">
+        <p>このサイトはGitHub Pagesでホストされています。</p>
+        <p>今日の日付: <span id="date"></span></p>
+    </div>
+    
+    <h2>概要</h2>
+    <p>これは基本的なGitHub Pagesサイトです。ここからサイトの開発を始めることができます。</p>
+    
+    <h2>次のステップ</h2>
+    <ul>
+        <li>CSSスタイルのカスタマイズ</li>
+        <li>追加ページの作成</li>
+        <li>JavaScriptの機能追加</li>
+        <li>レスポンシブデザインの実装</li>
+    </ul>
+
+    <script>
+        document.getElementById('date').textContent = new Date().toLocaleDateString('ja-JP');
+    </script>
+</body>
+</html>

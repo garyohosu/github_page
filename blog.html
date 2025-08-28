@@ -1,0 +1,750 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GitHub Pages - ブログ</title>
+    
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=GA_MEASUREMENT_ID"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'GA_MEASUREMENT_ID', {
+            page_title: 'GitHub Pages - ブログ',
+            page_location: window.location.href
+        });
+    </script>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        /* Navigation */
+        nav {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.1);
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover, .nav-links a.active {
+            color: #667eea;
+        }
+
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+        }
+
+        .hamburger span {
+            width: 25px;
+            height: 3px;
+            background: #333;
+            margin: 3px 0;
+            transition: 0.3s;
+        }
+
+        /* Search */
+        .search-container {
+            display: flex;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 25px;
+            padding: 0.5rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        #search-input {
+            border: none;
+            background: transparent;
+            padding: 0.5rem 1rem;
+            font-size: 0.9rem;
+            outline: none;
+            width: 200px;
+        }
+
+        #search-btn {
+            background: none;
+            border: none;
+            padding: 0.5rem;
+            cursor: pointer;
+            font-size: 1.2rem;
+        }
+
+        /* Main Content */
+        main {
+            margin-top: 80px;
+            min-height: calc(100vh - 80px);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .page-header {
+            text-align: center;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 3rem;
+            margin: 2rem 0;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+        }
+
+        .page-header h1 {
+            font-size: 3rem;
+            color: #2c3e50;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .blog-filters {
+            display: flex;
+            gap: 1rem;
+            margin: 2rem 0;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .filter-btn {
+            background: rgba(255, 255, 255, 0.9);
+            border: 2px solid transparent;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .filter-btn:hover, .filter-btn.active {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .blog-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .blog-post {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+            cursor: pointer;
+        }
+
+        .blog-post:hover {
+            transform: translateY(-5px);
+        }
+
+        .blog-post-header {
+            margin-bottom: 1rem;
+        }
+
+        .blog-post-date {
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .blog-post-title {
+            font-size: 1.5rem;
+            color: #2c3e50;
+            margin-bottom: 1rem;
+        }
+
+        .blog-post-excerpt {
+            color: #555;
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+
+        .blog-post-tags {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .blog-tag {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 0.3rem 0.8rem;
+            border-radius: 15px;
+            font-size: 0.8rem;
+        }
+
+        .read-more {
+            color: #667eea;
+            font-weight: 500;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .read-more:hover {
+            text-decoration: underline;
+        }
+
+        .featured-post {
+            grid-column: 1 / -1;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
+            border: 2px solid rgba(102, 126, 234, 0.2);
+        }
+
+        .featured-badge {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 0.3rem 0.8rem;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            position: absolute;
+            top: -10px;
+            right: 20px;
+        }
+
+        .newsletter {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 2rem;
+            margin: 3rem 0;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .newsletter h3 {
+            color: #2c3e50;
+            margin-bottom: 1rem;
+        }
+
+        .newsletter-form {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+            max-width: 400px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .newsletter-input {
+            flex: 1;
+            padding: 0.8rem;
+            border: 2px solid #e1e8ed;
+            border-radius: 25px;
+            font-size: 1rem;
+            outline: none;
+        }
+
+        .newsletter-input:focus {
+            border-color: #667eea;
+        }
+
+        .newsletter-btn {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: transform 0.3s ease;
+        }
+
+        .newsletter-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .theme-toggle {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.5rem;
+            transition: transform 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .theme-toggle:hover {
+            transform: scale(1.1);
+        }
+
+        /* Dark Theme */
+        body.dark-theme {
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+        }
+
+        body.dark-theme .blog-post,
+        body.dark-theme .page-header,
+        body.dark-theme .newsletter {
+            background: rgba(52, 73, 94, 0.95);
+            color: #ecf0f1;
+        }
+
+        body.dark-theme .page-header h1 {
+            color: #ecf0f1;
+        }
+
+        body.dark-theme .blog-post-title {
+            color: #ecf0f1;
+        }
+
+        body.dark-theme .newsletter h3 {
+            color: #ecf0f1;
+        }
+
+        body.dark-theme .newsletter-input {
+            background: rgba(44, 62, 80, 0.8);
+            color: #ecf0f1;
+            border-color: #5a6c7d;
+        }
+
+        body.dark-theme .filter-btn {
+            background: rgba(52, 73, 94, 0.9);
+            color: #ecf0f1;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+                flex-direction: column;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background: rgba(255, 255, 255, 0.95);
+                backdrop-filter: blur(10px);
+                box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            }
+
+            .nav-links.active {
+                display: flex;
+                padding: 1rem 2rem;
+            }
+
+            .hamburger {
+                display: flex;
+            }
+
+            .hamburger.active span:nth-child(1) {
+                transform: rotate(-45deg) translate(-5px, 6px);
+            }
+
+            .hamburger.active span:nth-child(2) {
+                opacity: 0;
+            }
+
+            .hamburger.active span:nth-child(3) {
+                transform: rotate(45deg) translate(-5px, -6px);
+            }
+
+            .search-container {
+                display: none;
+            }
+
+            .page-header h1 {
+                font-size: 2rem;
+            }
+
+            .container {
+                padding: 1rem;
+            }
+
+            .blog-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .blog-filters {
+                justify-content: flex-start;
+            }
+
+            .newsletter-form {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+
+            .theme-toggle {
+                bottom: 1rem;
+                right: 1rem;
+                width: 50px;
+                height: 50px;
+                font-size: 1.2rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .page-header {
+                padding: 2rem 1rem;
+            }
+
+            .page-header h1 {
+                font-size: 1.8rem;
+            }
+
+            .nav-container {
+                padding: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="nav-container">
+            <div class="logo">My Site</div>
+            <ul class="nav-links" id="nav-links">
+                <li><a href="index.html">ホーム</a></li>
+                <li><a href="about.html">概要</a></li>
+                <li><a href="contact.html">連絡先</a></li>
+                <li><a href="blog.html" class="active">ブログ</a></li>
+            </ul>
+            <div class="search-container">
+                <input type="text" id="search-input" placeholder="記事を検索..." />
+                <button id="search-btn">🔍</button>
+            </div>
+            <div class="hamburger" id="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <main>
+        <div class="container">
+            <div class="page-header">
+                <h1>ブログ</h1>
+                <p>ウェブ開発、技術トレンド、プロジェクト更新に関する最新記事</p>
+            </div>
+
+            <div class="blog-filters">
+                <button class="filter-btn active" data-filter="all">すべて</button>
+                <button class="filter-btn" data-filter="development">開発</button>
+                <button class="filter-btn" data-filter="design">デザイン</button>
+                <button class="filter-btn" data-filter="tutorial">チュートリアル</button>
+                <button class="filter-btn" data-filter="news">ニュース</button>
+            </div>
+
+            <div class="blog-grid" id="blog-grid">
+                <article class="blog-post featured-post" data-category="news">
+                    <div class="featured-badge">注目記事</div>
+                    <div class="blog-post-header">
+                        <div class="blog-post-date">2025年8月28日</div>
+                        <h2 class="blog-post-title">GitHub Pagesサイトが完成！全機能を紹介</h2>
+                    </div>
+                    <div class="blog-post-excerpt">
+                        当サイトが遂に完成しました！レスポンシブデザイン、検索機能、多言語対応、アナリティクス統合など、すべての機能をご紹介します。モダンなWebサイトの作り方も詳しく解説しています。
+                    </div>
+                    <div class="blog-post-tags">
+                        <span class="blog-tag">GitHub Pages</span>
+                        <span class="blog-tag">Web開発</span>
+                        <span class="blog-tag">完成報告</span>
+                    </div>
+                    <a href="#" class="read-more">続きを読む →</a>
+                </article>
+
+                <article class="blog-post" data-category="tutorial">
+                    <div class="blog-post-header">
+                        <div class="blog-post-date">2025年8月27日</div>
+                        <h2 class="blog-post-title">CSS ガラスモーフィズム効果の実装方法</h2>
+                    </div>
+                    <div class="blog-post-excerpt">
+                        モダンなデザイントレンドの一つ、ガラスモーフィズム効果をCSSで実装する方法を詳しく解説します。backdrop-filterプロパティとrgbaカラーを使った美しい透明効果の作り方。
+                    </div>
+                    <div class="blog-post-tags">
+                        <span class="blog-tag">CSS</span>
+                        <span class="blog-tag">デザイン</span>
+                        <span class="blog-tag">チュートリアル</span>
+                    </div>
+                    <a href="#" class="read-more">続きを読む →</a>
+                </article>
+
+                <article class="blog-post" data-category="development">
+                    <div class="blog-post-header">
+                        <div class="blog-post-date">2025年8月26日</div>
+                        <h2 class="blog-post-title">JavaScript検索機能の実装</h2>
+                    </div>
+                    <div class="blog-post-excerpt">
+                        ウェブサイトにクライアントサイド検索機能を実装する方法を解説。リアルタイム検索、ハイライト表示、フィルタリングなどの機能を純粋なJavaScriptで実装します。
+                    </div>
+                    <div class="blog-post-tags">
+                        <span class="blog-tag">JavaScript</span>
+                        <span class="blog-tag">検索</span>
+                        <span class="blog-tag">実装</span>
+                    </div>
+                    <a href="#" class="read-more">続きを読む →</a>
+                </article>
+
+                <article class="blog-post" data-category="design">
+                    <div class="blog-post-header">
+                        <div class="blog-post-date">2025年8月25日</div>
+                        <h2 class="blog-post-title">レスポンシブデザインのベストプラクティス</h2>
+                    </div>
+                    <div class="blog-post-excerpt">
+                        モバイルファーストなレスポンシブデザインを実装するための重要なポイントと、CSS GridとFlexboxを使った効果的なレイアウト設計について説明します。
+                    </div>
+                    <div class="blog-post-tags">
+                        <span class="blog-tag">レスポンシブ</span>
+                        <span class="blog-tag">CSS Grid</span>
+                        <span class="blog-tag">Flexbox</span>
+                    </div>
+                    <a href="#" class="read-more">続きを読む →</a>
+                </article>
+
+                <article class="blog-post" data-category="tutorial">
+                    <div class="blog-post-header">
+                        <div class="blog-post-date">2025年8月24日</div>
+                        <h2 class="blog-post-title">多言語対応ウェブサイトの作り方</h2>
+                    </div>
+                    <div class="blog-post-excerpt">
+                        JavaScriptを使って動的に言語を切り替えるウェブサイトの実装方法。localStorage活用、翻訳データの管理、SEO対策まで幅広く解説しています。
+                    </div>
+                    <div class="blog-post-tags">
+                        <span class="blog-tag">国際化</span>
+                        <span class="blog-tag">JavaScript</span>
+                        <span class="blog-tag">多言語</span>
+                    </div>
+                    <a href="#" class="read-more">続きを読む →</a>
+                </article>
+
+                <article class="blog-post" data-category="development">
+                    <div class="blog-post-header">
+                        <div class="blog-post-date">2025年8月23日</div>
+                        <h2 class="blog-post-title">Google Analytics 4の導入と設定</h2>
+                    </div>
+                    <div class="blog-post-excerpt">
+                        ウェブサイトにGoogle Analytics 4を導入し、効果的なトラッキングを設定する方法。イベントトラッキング、コンバージョン測定、プライバシー対応についても解説。
+                    </div>
+                    <div class="blog-post-tags">
+                        <span class="blog-tag">アナリティクス</span>
+                        <span class="blog-tag">GA4</span>
+                        <span class="blog-tag">測定</span>
+                    </div>
+                    <a href="#" class="read-more">続きを読む →</a>
+                </article>
+            </div>
+
+            <div class="newsletter">
+                <h3>📧 ニュースレター購読</h3>
+                <p>最新記事やウェブ開発のトレンド情報をお届けします</p>
+                <form class="newsletter-form" id="newsletter-form">
+                    <input type="email" class="newsletter-input" placeholder="メールアドレスを入力" required>
+                    <button type="submit" class="newsletter-btn">購読する</button>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <button class="theme-toggle" onclick="toggleTheme()" title="テーマ切り替え">🌙</button>
+
+    <script>
+        // ハンバーガーメニュー
+        const hamburger = document.getElementById('hamburger');
+        const navLinks = document.getElementById('nav-links');
+
+        hamburger.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+            hamburger.classList.toggle('active');
+        });
+
+        // フィルタリング機能
+        const filterBtns = document.querySelectorAll('.filter-btn');
+        const blogPosts = document.querySelectorAll('.blog-post');
+
+        filterBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                // アクティブボタンの更新
+                filterBtns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+
+                const filter = btn.getAttribute('data-filter');
+
+                // 記事のフィルタリング
+                blogPosts.forEach(post => {
+                    if (filter === 'all' || post.getAttribute('data-category') === filter) {
+                        post.style.display = 'block';
+                        setTimeout(() => {
+                            post.style.opacity = '1';
+                            post.style.transform = 'translateY(0)';
+                        }, 100);
+                    } else {
+                        post.style.opacity = '0';
+                        post.style.transform = 'translateY(20px)';
+                        setTimeout(() => {
+                            post.style.display = 'none';
+                        }, 300);
+                    }
+                });
+            });
+        });
+
+        // 検索機能
+        const searchInput = document.getElementById('search-input');
+        searchInput.addEventListener('input', (e) => {
+            const query = e.target.value.toLowerCase();
+            
+            blogPosts.forEach(post => {
+                const title = post.querySelector('.blog-post-title').textContent.toLowerCase();
+                const excerpt = post.querySelector('.blog-post-excerpt').textContent.toLowerCase();
+                const tags = Array.from(post.querySelectorAll('.blog-tag')).map(tag => tag.textContent.toLowerCase());
+                
+                const matches = title.includes(query) || 
+                               excerpt.includes(query) || 
+                               tags.some(tag => tag.includes(query));
+                
+                if (query === '' || matches) {
+                    post.style.display = 'block';
+                    post.style.opacity = '1';
+                } else {
+                    post.style.display = 'none';
+                    post.style.opacity = '0';
+                }
+            });
+        });
+
+        // ニュースレター登録
+        const newsletterForm = document.getElementById('newsletter-form');
+        newsletterForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const email = e.target.querySelector('.newsletter-input').value;
+            
+            // 送信シミュレーション
+            const btn = e.target.querySelector('.newsletter-btn');
+            const originalText = btn.textContent;
+            
+            btn.textContent = '送信中...';
+            btn.disabled = true;
+            
+            setTimeout(() => {
+                alert('ニュースレターの購読ありがとうございます！\n' + email + ' に確認メールを送信しました。');
+                e.target.reset();
+                btn.textContent = originalText;
+                btn.disabled = false;
+            }, 1500);
+        });
+
+        // テーマ切り替え
+        function toggleTheme() {
+            document.body.classList.toggle('dark-theme');
+            const themeButton = document.querySelector('.theme-toggle');
+            const isDark = document.body.classList.contains('dark-theme');
+            themeButton.textContent = isDark ? '☀️' : '🌙';
+            
+            localStorage.setItem('theme', isDark ? 'dark' : 'light');
+        }
+
+        // ページ読み込み時にテーマを復元
+        window.addEventListener('load', () => {
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme === 'dark') {
+                document.body.classList.add('dark-theme');
+                document.querySelector('.theme-toggle').textContent = '☀️';
+            }
+        });
+
+        // スムーズスクロール
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+
+        // 記事ホバーエフェクト
+        blogPosts.forEach(post => {
+            post.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-5px) scale(1.02)';
+            });
+            
+            post.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0) scale(1)';
+            });
+        });
+
+        // 記事アニメーション
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        });
+
+        blogPosts.forEach((post) => {
+            post.style.opacity = '0';
+            post.style.transform = 'translateY(30px)';
+            post.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            observer.observe(post);
+        });
+    </script>
+</body>
+</html>

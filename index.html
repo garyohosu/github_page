@@ -4,6 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GitHub Pages - ホーム</title>
+    
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=GA_MEASUREMENT_ID"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        // 設定は各ページで個別に行う
+    </script>
     <style>
         * {
             margin: 0;
@@ -74,6 +83,95 @@
             background: #333;
             margin: 3px 0;
             transition: 0.3s;
+        }
+
+        /* Search */
+        .search-container {
+            display: flex;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 25px;
+            padding: 0.5rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        #search-input {
+            border: none;
+            background: transparent;
+            padding: 0.5rem 1rem;
+            font-size: 0.9rem;
+            outline: none;
+            width: 200px;
+        }
+
+        #search-btn {
+            background: none;
+            border: none;
+            padding: 0.5rem;
+            cursor: pointer;
+            font-size: 1.2rem;
+        }
+        
+        /* Language Switcher */
+        .lang-switcher {
+            margin-left: 1rem;
+        }
+        
+        #lang-btn {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: transform 0.3s ease;
+        }
+        
+        #lang-btn:hover {
+            transform: scale(1.05);
+        }
+
+        .search-results {
+            position: fixed;
+            top: 80px;
+            right: 2rem;
+            width: 300px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            z-index: 999;
+            display: none;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .search-result {
+            padding: 1rem;
+            border-bottom: 1px solid rgba(0,0,0,0.1);
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .search-result:hover {
+            background: rgba(102, 126, 234, 0.1);
+        }
+
+        .search-result:last-child {
+            border-bottom: none;
+        }
+
+        .search-result-title {
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 0.5rem;
+        }
+
+        .search-result-snippet {
+            font-size: 0.9rem;
+            color: #666;
+            line-height: 1.4;
         }
 
         /* Main Content */
@@ -242,6 +340,31 @@
             color: #ecf0f1;
         }
 
+        /* Dark Theme Search */
+        body.dark-theme .search-container {
+            background: rgba(52, 73, 94, 0.9);
+        }
+
+        body.dark-theme #search-input {
+            color: #ecf0f1;
+        }
+
+        body.dark-theme #search-input::placeholder {
+            color: #bdc3c7;
+        }
+
+        body.dark-theme .search-results {
+            background: rgba(52, 73, 94, 0.95);
+        }
+
+        body.dark-theme .search-result-title {
+            color: #ecf0f1;
+        }
+
+        body.dark-theme .search-result-snippet {
+            color: #bdc3c7;
+        }
+
         /* Responsive Design */
         @media (max-width: 768px) {
             .nav-links {
@@ -254,6 +377,41 @@
                 background: rgba(255, 255, 255, 0.95);
                 backdrop-filter: blur(10px);
                 box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            }
+
+            .search-container {
+                display: none;
+            }
+            
+            .lang-switcher {
+                display: none;
+            }
+
+            .nav-links.active {
+                padding-bottom: 1rem;
+            }
+
+            .nav-links.active::after {
+                content: '';
+                display: block;
+                margin: 1rem 2rem 0;
+                padding: 0.5rem;
+            }
+
+            .mobile-search {
+                display: block;
+                margin: 1rem 2rem;
+                padding: 0.5rem 1rem;
+                border: 1px solid #ddd;
+                border-radius: 20px;
+                font-size: 0.9rem;
+                width: calc(100% - 4rem);
+            }
+
+            .search-results {
+                right: 1rem;
+                left: 1rem;
+                width: auto;
             }
 
             .nav-links.active {
@@ -275,6 +433,10 @@
 
             .hamburger.active span:nth-child(3) {
                 transform: rotate(45deg) translate(-5px, -6px);
+            }
+
+            .nav-links.active .mobile-search {
+                display: block;
             }
 
             .hero h1 {
@@ -322,7 +484,15 @@
                 <li><a href="index.html" class="active">ホーム</a></li>
                 <li><a href="about.html">概要</a></li>
                 <li><a href="contact.html">連絡先</a></li>
+                <li><a href="blog.html">ブログ</a></li>
             </ul>
+            <div class="search-container">
+                <input type="text" id="search-input" placeholder="サイト内検索..." />
+                <button id="search-btn">🔍</button>
+            </div>
+            <div class="lang-switcher">
+                <button id="lang-btn" onclick="toggleLanguage()">🌐 EN</button>
+            </div>
             <div class="hamburger" id="hamburger">
                 <span></span>
                 <span></span>
@@ -394,11 +564,47 @@
         </div>
     </main>
 
+    <div class="search-results" id="search-results"></div>
+    
     <button class="theme-toggle" onclick="toggleTheme()" title="テーマ切り替え">🌙</button>
 
     <script>
         // 日付表示
         document.getElementById('date').textContent = new Date().toLocaleDateString('ja-JP');
+        
+        // Google Analytics
+        gtag('config', 'GA_MEASUREMENT_ID', {
+            page_title: 'GitHub Pages - ホーム',
+            page_location: window.location.href
+        });
+        
+        // サイトコンテンツデータ（検索用）
+        const siteContent = [
+            {
+                title: 'ホーム - GitHub Pages サイトへようこそ',
+                content: 'このサイトはGitHub Pagesでホストされています。CSSスタイルのカスタマイズ、レスポンシブデザイン、JavaScript機能、追加ページを含む現代的なWebサイトです。',
+                url: 'index.html',
+                keywords: ['ホーム', 'GitHub Pages', 'ウェブサイト', 'CSS', 'JavaScript', 'レスポンシブ']
+            },
+            {
+                title: '概要 - サイトについて',
+                content: 'プロジェクトの詳細、使用技術、開発履歴、将来の計画について説明しています。HTML5、CSS3、JavaScript、レスポンシブデザインを使用。',
+                url: 'about.html',
+                keywords: ['概要', 'プロジェクト', '技術', '履歴', 'HTML5', 'CSS3', 'JavaScript']
+            },
+            {
+                title: '連絡先 - お問い合わせ',
+                content: 'お問い合わせフォーム、連絡先情報、SNSリンク、アクセス情報を掲載しています。',
+                url: 'contact.html',
+                keywords: ['連絡先', 'お問い合わせ', 'フォーム', 'SNS', 'アクセス']
+            },
+            {
+                title: 'ブログ - 最新記事',
+                content: 'ウェブ開発、技術トレンド、プロジェクト更新に関する記事を掲載しています。',
+                url: 'blog.html',
+                keywords: ['ブログ', '記事', '開発', '技術', 'トレンド', '更新']
+            }
+        ];
 
         // ハンバーガーメニュー
         const hamburger = document.getElementById('hamburger');
@@ -407,6 +613,72 @@
         hamburger.addEventListener('click', () => {
             navLinks.classList.toggle('active');
             hamburger.classList.toggle('active');
+            
+            // モバイル検索を追加
+            if (navLinks.classList.contains('active') && !document.querySelector('.mobile-search')) {
+                const mobileSearch = document.createElement('input');
+                mobileSearch.type = 'text';
+                mobileSearch.placeholder = 'サイト内検索...';
+                mobileSearch.className = 'mobile-search';
+                mobileSearch.addEventListener('input', performSearch);
+                navLinks.appendChild(mobileSearch);
+            }
+        });
+        
+        // 検索機能
+        const searchInput = document.getElementById('search-input');
+        const searchBtn = document.getElementById('search-btn');
+        const searchResults = document.getElementById('search-results');
+        
+        function performSearch(e) {
+            const query = e.target.value.toLowerCase().trim();
+            
+            if (query.length < 2) {
+                searchResults.style.display = 'none';
+                return;
+            }
+            
+            const results = siteContent.filter(item => {
+                return item.title.toLowerCase().includes(query) ||
+                       item.content.toLowerCase().includes(query) ||
+                       item.keywords.some(keyword => keyword.toLowerCase().includes(query));
+            });
+            
+            displaySearchResults(results, query);
+        }
+        
+        function displaySearchResults(results, query) {
+            if (results.length === 0) {
+                searchResults.innerHTML = '<div class="search-result"><div class="search-result-title">検索結果なし</div><div class="search-result-snippet">「' + query + '」に一致する結果が見つかりませんでした。</div></div>';
+            } else {
+                searchResults.innerHTML = results.map(result => {
+                    const snippet = highlightQuery(result.content.substring(0, 100) + '...', query);
+                    const title = highlightQuery(result.title, query);
+                    return `
+                        <div class="search-result" onclick="window.location.href='${result.url}'">
+                            <div class="search-result-title">${title}</div>
+                            <div class="search-result-snippet">${snippet}</div>
+                        </div>
+                    `;
+                }).join('');
+            }
+            
+            searchResults.style.display = 'block';
+        }
+        
+        function highlightQuery(text, query) {
+            const regex = new RegExp(`(${query})`, 'gi');
+            return text.replace(regex, '<strong style="background: yellow; color: black;">$1</strong>');
+        }
+        
+        searchInput.addEventListener('input', performSearch);
+        searchBtn.addEventListener('click', () => searchInput.focus());
+        
+        // 検索結果を外側クリックで閉じる
+        document.addEventListener('click', (e) => {
+            if (!searchResults.contains(e.target) && !searchInput.contains(e.target) && !searchBtn.contains(e.target)) {
+                searchResults.style.display = 'none';
+            }
         });
 
         // インタラクティブ機能

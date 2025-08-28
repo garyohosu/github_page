@@ -466,7 +466,20 @@
                 <div class="api-key-section">
                     <h3>⚠️ OpenWeatherMap APIキーが必要です</h3>
                     <p>このアプリを使用するには、<a href="https://openweathermap.org/api" target="_blank" style="color: #667eea;">OpenWeatherMap</a>で無料のAPIキーを取得してください。</p>
-                    <input type="password" id="api-key" class="api-key-input" placeholder="APIキーを入力してください..." />
+                    
+                    <div style="margin: 1rem 0; padding: 1rem; background: rgba(255,255,255,0.8); border-radius: 8px; font-size: 0.9rem;">
+                        <strong>📝 簡単な取得手順:</strong><br>
+                        1. <a href="https://openweathermap.org/" target="_blank" style="color: #667eea;">OpenWeatherMap.org</a> でアカウント作成<br>
+                        2. ログイン後、"My API keys" をクリック<br>
+                        3. 生成されたAPIキーをコピーして下記に貼り付け<br>
+                        <small>ℹ️ 新しいAPIキーは約10分後に有効になります</small>
+                    </div>
+                    
+                    <div style="display: flex; gap: 0.5rem; align-items: center;">
+                        <input type="password" id="api-key" class="api-key-input" placeholder="APIキーを貼り付けてください (例: a1b2c3d4e5f6...)" style="flex: 1;" />
+                        <button type="button" id="toggle-api-visibility" style="padding: 0.8rem; background: #667eea; color: white; border: none; border-radius: 8px; cursor: pointer;">👁️</button>
+                        <button type="button" id="demo-btn" style="padding: 0.8rem 1rem; background: #ffa726; color: white; border: none; border-radius: 8px; cursor: pointer; font-size: 0.9rem;">🎭 デモ</button>
+                    </div>
                 </div>
 
                 <form class="search-form" id="weather-form">
@@ -522,6 +535,10 @@
                     <span class="recent-item" onclick="searchWeather('London')">London</span>
                     <span class="recent-item" onclick="searchWeather('New York')">New York</span>
                     <span class="recent-item" onclick="searchWeather('Paris')">Paris</span>
+                    <span class="recent-item" onclick="searchWeather('Osaka')">Osaka</span>
+                    <span class="recent-item" onclick="searchWeather('Sydney')">Sydney</span>
+                    <span class="recent-item" onclick="searchWeather('Berlin')">Berlin</span>
+                    <span class="recent-item" onclick="searchWeather('Seoul')">Seoul</span>
                 </div>
             </div>
         </div>
@@ -566,6 +583,59 @@
             apiKey = e.target.value;
             localStorage.setItem('openweather_api_key', apiKey);
         });
+        
+        // APIキー表示切り替え
+        document.getElementById('toggle-api-visibility').addEventListener('click', () => {
+            const apiInput = document.getElementById('api-key');
+            const toggleBtn = document.getElementById('toggle-api-visibility');
+            if (apiInput.type === 'password') {
+                apiInput.type = 'text';
+                toggleBtn.textContent = '🙈';
+            } else {
+                apiInput.type = 'password';
+                toggleBtn.textContent = '👁️';
+            }
+        });
+        
+        // デモモード
+        document.getElementById('demo-btn').addEventListener('click', () => {
+            displayDemoWeather();
+        });
+        
+        // デモ用の天気データ表示
+        function displayDemoWeather() {
+            const demoData = {
+                name: 'Tokyo',
+                sys: { country: 'JP' },
+                main: {
+                    temp: 23,
+                    feels_like: 25,
+                    humidity: 65,
+                    pressure: 1013
+                },
+                weather: [{
+                    description: '晴れ',
+                    icon: '01d'
+                }],
+                wind: { speed: 3.2 },
+                visibility: 10000,
+                clouds: { all: 20 }
+            };
+            
+            displayWeather(demoData);
+            
+            // デモメッセージを追加
+            setTimeout(() => {
+                const weatherDisplay = document.getElementById('weather-display');
+                const demoNotice = document.createElement('div');
+                demoNotice.innerHTML = '<div style="background: rgba(255,193,7,0.8); padding: 1rem; border-radius: 8px; margin-top: 1rem; text-align: center;"><strong>🎭 デモデータ</strong><br>これはサンプルデータです。実際のデータを取得するにはAPIキーが必要です。</div>';
+                weatherDisplay.appendChild(demoNotice);
+                
+                setTimeout(() => {
+                    demoNotice.remove();
+                }, 5000);
+            }, 500);
+        }
 
         // フォーム送信
         document.getElementById('weather-form').addEventListener('submit', (e) => {
@@ -602,9 +672,11 @@
                     if (response.status === 401) {
                         throw new Error('APIキーが無効です。正しいAPIキーを入力してください。');
                     } else if (response.status === 404) {
-                        throw new Error('都市が見つかりませんでした。都市名を確認してください。');
+                        throw new Error('都市が見つかりませんでした。都市名を確認してください。例: "Tokyo", "London", "New York"');
+                    } else if (response.status === 429) {
+                        throw new Error('APIリクエストが多すぎます。しばらくお待ちください。');
                     } else {
-                        throw new Error('天気データの取得に失敗しました。');
+                        throw new Error(`天気データの取得に失敗しました。(ステータス: ${response.status})`);
                     }
                 }
 
